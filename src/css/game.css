@@ -78,6 +78,7 @@ body {
 	background-color: #777;
 	width: 3px;
 	position: absolute;
+	z-index: 2;
 }
 
 .rotate-90 {
@@ -90,12 +91,32 @@ body {
 	transform-origin: 100% 100%;
 }
 
+.anti-rotate-90 {
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+	-moz-transform-origin: 100% 100%;
+	transform-origin: 100% 100%;
+}
+
 .rotate-180 {
 	-webkit-transform: rotate(180deg);
 	-moz-transform: rotate(180deg);
 	-o-transform: rotate(180deg);
 	-ms-transform: rotate(180deg);
 	transform: rotate(180deg);
+	-moz-transform-origin: 100% 100%;
+	transform-origin: 100% 100%;
+}
+
+.anti-rotate-180 {
+	-webkit-transform: rotate(-180deg);
+	-moz-transform: rotate(-180deg);
+	-o-transform: rotate(-180deg);
+	-ms-transform: rotate(-180deg);
+	transform: rotate(-180deg);
 	-moz-transform-origin: 100% 100%;
 	transform-origin: 100% 100%;
 }

@@ -30,53 +30,101 @@ var Bridge = function () {
 Bridge.prototype.startBuilding = function () {
 	var height = this.bridge.style.height = 0;
 	this.bridge.className = 'inline-block';
-	this.bridge.style.left = utils.pI(game.firstBuilding.style.width) - 3 + 'px';
+
+	if (!game.isReversedMode) {
+		this.bridge.style.left = utils.pI(game.firstBuilding.style.width) - 3 + 'px';
+	}
+	else {
+		this.bridge.style.left = game.sceneWidth - utils.pI(game.secondBuilding.style.width) - 3 + 'px';
+	}
+
 	this.bridge.style.bottom = game.buildingHeight + 'px';
 
 	this.startBuildingInterval = setInterval(function () {
 		self.bridge.style.height = height + 'px';
 		height += 2;
-		self.bridge.style.height = utils.clamp(utils.pI(self.bridge.style.height), 0, game.sceneWidth - utils.pI(game.firstBuilding.style.width)) + 'px';
+		if (!game.isReversedMode) {
+			self.bridge.style.height = utils.clamp(utils.pI(self.bridge.style.height), 0, game.sceneWidth - utils.pI(game.firstBuilding.style.width)) + 'px';
+		} else {
+			self.bridge.style.height = utils.clamp(utils.pI(self.bridge.style.height), 0, game.sceneWidth - utils.pI(game.secondBuilding.style.width)) + 'px';
+		}
 	}, 5);
 };
 
 Bridge.prototype.stopBuilding = function () {
 	clearInterval(this.startBuildingInterval);
 	// Rotate the bridge
-	this.bridge.className = 'rotate-90';
+	if (!game.isReversedMode) {
+		this.bridge.className = 'rotate-90';
+	}
+	else {
+		this.bridge.className = 'anti-rotate-90';
+	}
 	//this.bridge.style.height = utils.clamp(utils.pI(this.bridge.style.height), 0, game.sceneWidth - utils.pI(game.firstBuilding.style.width)) + 'px';
 
 };
 
 Bridge.prototype.checkBridgePlacement = function () {
-	var bridgeSecondEndLocation = utils.pI(this.bridge.style.left) + utils.pI(this.bridge.style.height) + 3;
+	if (!game.isReversedMode) {
+		var bridgeSecondEndLocation = utils.pI(this.bridge.style.left) + utils.pI(this.bridge.style.height) + 3;
 
-	var secondBuildingLeftOffset = utils.pI(game.secondBuilding.style.left),
-		secondBuildingWidth = utils.pI(game.secondBuilding.style.width);
+		var secondBuildingLeftOffset = utils.pI(game.secondBuilding.style.left),
+			secondBuildingWidth = utils.pI(game.secondBuilding.style.width);
 
-	if (bridgeSecondEndLocation < secondBuildingLeftOffset) {
-		//console.log('shorter');
-		game.gameOverPosteriors();
+		if (bridgeSecondEndLocation < secondBuildingLeftOffset) {
+			//console.log('shorter');
+			game.gameOverPosteriors();
+		} else if (bridgeSecondEndLocation > (secondBuildingLeftOffset + secondBuildingWidth)) {
+			//console.log('bigger');
+			game.gameOverPosteriors();
+		} else if (bridgeSecondEndLocation > secondBuildingLeftOffset + (secondBuildingWidth / 2) - 3 && bridgeSecondEndLocation < secondBuildingLeftOffset + (secondBuildingWidth / 2) + 3) {
+			// bonus
+			game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 2;
+			game.gameBonusPointElement.className = 'inline-block  game-bonus-point  game-bonus-point-anim';
+			setTimeout(function () {
+				game.gameBonusPointElement.className = 'game-bonus-point  hidden';
+			}, 1500);
 
-		//gameover
-	} else if (bridgeSecondEndLocation > (secondBuildingLeftOffset + secondBuildingWidth)) {
-		//console.log('bigger');
-		game.gameOverPosteriors();
-	} else if (bridgeSecondEndLocation > secondBuildingLeftOffset + (secondBuildingWidth / 2) - 3 && bridgeSecondEndLocation < secondBuildingLeftOffset + (secondBuildingWidth / 2) + 3) {
-		// bonus
-		game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 2;
-		game.gameBonusPointElement.className = 'inline-block  game-bonus-point  game-bonus-point-anim';
-		setTimeout(function () {
-			game.gameBonusPointElement.className = 'game-bonus-point  hidden';
-		}, 1500);
-
-		game.updateHighestScore();
-		game.moveAhead();
+			game.updateHighestScore();
+			game.moveAhead();
+		} else {
+			// okay
+			game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 1;
+			game.updateHighestScore();
+			game.moveAhead();
+		}
 	} else {
-		// perfect
-		game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 1;
-		game.updateHighestScore();
-		game.moveAhead();
+		var bridgeSecondEndLocation = utils.pI(this.bridge.style.left) - utils.pI(this.bridge.style.height) + 3;
+
+		var firstBuildingLeftOffset = utils.pI(game.firstBuilding.style.left),
+			firstBuildingWidth = utils.pI(game.firstBuilding.style.width);
+
+		console.log(bridgeSecondEndLocation, firstBuildingLeftOffset, firstBuildingWidth);
+
+		if (bridgeSecondEndLocation > (firstBuildingLeftOffset + firstBuildingWidth)) {
+			console.log('shorter');
+			game.gameOverPosteriors();
+		} else if (bridgeSecondEndLocation < firstBuildingLeftOffset) {
+			console.log('bigger');
+			game.gameOverPosteriors();
+		} else if (bridgeSecondEndLocation > firstBuildingLeftOffset + (firstBuildingWidth / 2) - 3 && bridgeSecondEndLocation < firstBuildingLeftOffset + (firstBuildingWidth / 2) + 3) {
+			// bonus
+			game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 2;
+			game.gameBonusPointElement.className = 'inline-block  game-bonus-point  game-bonus-point-anim';
+			setTimeout(function () {
+				game.gameBonusPointElement.className = 'game-bonus-point  hidden';
+			}, 1500);
+
+			game.updateHighestScore();
+			game.moveAhead();
+		} else {
+			// okay
+			console.log('okay')
+			game.scoreElement.innerHTML = utils.pI(game.scoreElement.innerHTML) + 1;
+			game.updateHighestScore();
+			game.moveAhead();
+		}
+
 	}
 };
 
@@ -109,6 +157,8 @@ var Game = function () {
 
 	var self = this;
 
+	this.isReversedMode = true;
+
 	document.getElementsByClassName('buildings')[0].style.height = this.windowHeight - 65 + 'px';
 };
 
@@ -125,26 +175,44 @@ Game.prototype.addBuildings = function (isGameInProgress) {
 		firstBuildingWidth = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth / 2);
 		this.firstBuilding.style.width = firstBuildingWidth + 'px';
 		this.firstBuilding.style.height = this.buildingHeight + 'px';
-		this.firstBuilding.style.left = 0;
+		if (!this.isReversedMode) {
+			this.firstBuilding.style.left = 0;
+		}
 	} else {
 		firstBuildingWidth = utils.pI(this.secondBuilding.style.width);
 		this.firstBuilding.style.width = firstBuildingWidth + 'px';
 		this.firstBuilding.style.height = this.secondBuilding.style.height;
-		this.firstBuilding.style.left = 0;
+		if (!this.isReversedMode) {
+			this.firstBuilding.style.left = 0;
+		}
 	}
 
 
 	// Second Building
-	var secondBuildingPosition = {};
-	secondBuildingPosition.x = utils.getRandomInt(firstBuildingWidth + 5, this.sceneWidth - this.minBuildingWidth);
-	this.secondBuilding.style.left = secondBuildingPosition.x + 'px';
+	var secondBuildingPosition = {},
+		secondBuildingWidth;
 
-	var secondBuildingWidth = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth - secondBuildingPosition.x);
+	if (!this.isReversedMode) {
+		secondBuildingPosition.x = utils.getRandomInt(firstBuildingWidth + 5, this.sceneWidth - this.minBuildingWidth);
+		this.secondBuilding.style.left = secondBuildingPosition.x + 'px';
+		secondBuildingWidth = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth - secondBuildingPosition.x);
+		// mid-spot
+		this.secondBuildingMidSpot.style.left = secondBuildingPosition.x + (secondBuildingWidth / 2) - 3 + 'px';
+	} else {
+		this.secondBuilding.style.right = 0
+		secondBuildingWidth = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth / 2);
+
+		console.log(secondBuildingWidth)
+		this.firstBuilding.style.width = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth - secondBuildingWidth - 5);
+		this.firstBuilding.style.left = utils.getRandomInt(this.minBuildingWidth, this.sceneWidth - secondBuildingWidth - 5 - utils.pI(this.firstBuilding.style.width)) + 'px';
+		console.log(this.firstBuilding.style.left, this.minBuildingWidth, this.firstBuilding.style.width)
+		// mid-spot
+		this.secondBuildingMidSpot.style.left = utils.pI(this.firstBuilding.style.left) + (utils.pI(this.firstBuilding.style.width) / 2) - 3 + 'px';
+	}
+
 	this.secondBuilding.style.width = secondBuildingWidth + 'px';
 	this.secondBuilding.style.height = this.buildingHeight + 'px';
 
-	// mid-spot
-	this.secondBuildingMidSpot.style.left = secondBuildingPosition.x + (secondBuildingWidth / 2) - 3 + 'px';
 	this.secondBuildingMidSpot.style.bottom = this.buildingHeight + 'px';
 };
 
@@ -202,12 +270,17 @@ Game.prototype.gameOverPosteriors = function () {
 	this.removeEventListeners();
 
 	setTimeout( function () {
-		this.bridge.className = 'rotate-180';
+		this.bridge.style.height = utils.clamp(utils.pI(this.bridge.style.height), 0, game.buildingHeight - 1) + 'px';
+		if (!game.isReversedMode) {
+			this.bridge.className = 'rotate-180';
+		} else {
+			this.bridge.className = 'anti-rotate-180';
+		}
 	}, 500);
 
 	setTimeout( function () {
 		this.bridge.className = 'hidden';
-	}, 550);
+	}, 600);
 };
 
 Game.prototype.updateHighestScore = function () {
