@@ -16,6 +16,7 @@ body {
 	width: 500px;
 	margin: 0 auto;
 	border: 2px solid #ccc;
+	overflow: hidden;
 }
 
 .game-header {
@@ -62,10 +63,10 @@ body {
 	display: inline-block;
 	bottom: 0;
 	position: absolute;
-	-webkit-transition:all 0.5s ease-out;
-	-moz-transition:all 0.5s ease-out;
-	-o-transition:all 0.5s ease-out;
-	transition:all 0.5s ease-out
+	-webkit-transition:all 0.51s ease-out;
+	-moz-transition:all 0.51s ease-out;
+	-o-transition:all 0.51s ease-out;
+	transition:all 0.51s ease-out
 }
 
 #first-building__mid-spot, #second-building__mid-spot {
