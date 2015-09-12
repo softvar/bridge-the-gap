@@ -2,25 +2,40 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="../dist/game.min.css">
+		<link rel="stylesheet" type="text/css" href="css/game.css">
 	</head>
 	<body>
 		<div class="game">
 			<div class="game-header">
+				<div class="game-sound">
+					<span id="sound-off" class="hidden">
+						<svg fill="#757575" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+						    <path d="M7 9v6h4l5 5V4l-5 5H7z"/>
+						    <path d="M0 0h24v24H0z" fill="none"/>
+						</svg>
+					</span>
+					<span id="sound-on" class="hidden">
+						<svg fill="#757575" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+						    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+						    <path d="M0 0h24v24H0z" fill="none"/>
+						</svg>
+					</span>
+				</div>
 				<div class="game-score-board"> | Score: <span class="game-score">0</span></div>
-				<div class="game-score-board">Highest: <span class="game-highest-score">0</span></div>
-				<div class="game-title">Bridger</div>
+				<div class="game-score-board highest-score-board">Highest: <span class="game-highest-score">0</span></div>
+				<div class="game-title">Bridge the gap!</div>
 			</div>
 			<div class="buildings">
 				<div class="intro">
 					<div class="intro-1">Press down to start creating a bridge</div>
 					<div class="intro-2">Release to lay down the bridge</div>
 				</div>
+				<div id="reversed" class="hidden">REVERSED</div>
 				<div id="first-building"></div>
 
 				<div id="second-building"></div>
 				<div id="bridge" class="hidden"></div>
-				<div id="second-building__mid-spot"></div>
+				<div id="second-building__mid-spot" class="hidden"></div>
 
 				<div class="game-bonus-point  hidden">BONUS +1</div>
 
