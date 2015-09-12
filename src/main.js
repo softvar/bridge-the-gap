@@ -222,6 +222,9 @@ var Game = function () {
 	this.soundOffElement = document.getElementById('sound-off');
 	this.soundOnElement = document.getElementById('sound-on');
 	this.isSound = utils.getLocalStorageData(true);
+	if (isNaN(this.isSound)) {
+		this.isSound = 1;
+	}
 
 	if (this.isSound) {
 		this.soundOffElement.className = 'hidden';
