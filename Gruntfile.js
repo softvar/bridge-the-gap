@@ -2,11 +2,6 @@
 
 module.exports = function(grunt) {
 	grunt.initConfig({
-		serve: {
-			options: {
-				port: 9000
-			}
-		},
 		watch: {
 			css: {
 				files: 'src/*.*',

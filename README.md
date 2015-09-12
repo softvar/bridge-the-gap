@@ -21,7 +21,7 @@ Rules
 REVERSED Mode
 -------------
 
-1. REVERSED mode is set in an aperidic manner(at random intervals) where buildings swap their locations and a player has to lay bridge in an opposite direction(RIght to Left).
+1. REVERSED mode is set in an aperiodic manner(at random intervals) where buildings swap their locations and a player has to lay bridge in an opposite direction(RIght to Left).
 
 Technology
 ----------
