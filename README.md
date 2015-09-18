@@ -3,6 +3,10 @@ Bridge The Gap
 
 Entry game for [js13kGames](http://2015.js13kgames.com/) competition.
 
+Here's the link to play - [Bridge The Gap](http://js13kgames.com/entries/bridge-the-gap)
+
+Here's the video compilation - [Bridge The Gap's Video Compilation](https://youtu.be/wBhNJL-zXXM?t=424)
+
 A simple HTML5 game where a player has to create bridges in order to cross buildings.
 
 ![alt text](screenshots/normal_mode_sound_on.png "Normal mode with sound on")
